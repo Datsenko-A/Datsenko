@@ -1,3 +1,4 @@
 # Datsenko
 Datsenko Anton (G11) repository
-\nThese all are just training tasks
+
+These all are just training tasks
