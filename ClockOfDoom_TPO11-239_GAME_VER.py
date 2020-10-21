@@ -3,6 +3,7 @@ import random
 
 run = 1
 while run == 1:
+
     def transformer():
         life_of_the_universe = 60 * 60 * 24 * 365 * 14000000000
         random_guess = random.randint(1, life_of_the_universe)
@@ -47,7 +48,7 @@ while run == 1:
                       result_day, "дн.",
                       result_hour, "год.",
                       result_minute, "хв. та",
-                      remain_seconds_guess, "сек.")
+                      remain_seconds_guess, "сек. до кінця всесвіту.")
             elif result_billions > 0:
                 print("Комп'ютер думає що залишилось всього:",
                       result_billions, "млрд.,",
@@ -56,7 +57,7 @@ while run == 1:
                       result_day, "дн.",
                       result_hour, "год.",
                       result_minute, "хв. та",
-                      remain_seconds_guess, "сек.")
+                      remain_seconds_guess, "сек. до кінця всесвіту.")
             elif result_millions > 0:
                 print("Комп'ютер думає що залишилось всього:",
                       result_millions, "млн. та",
@@ -64,14 +65,14 @@ while run == 1:
                       result_day, "дн.",
                       result_hour, "год.",
                       result_minute, "хв.", "та",
-                      remain_seconds_guess, "сек.")
+                      remain_seconds_guess, "сек. до кінця всесвіту.")
             else:
                 print("Комп'ютер думає що залишилось всього:",
                       result_year, "років",
                       result_day, "дн.",
                       result_hour, "год.",
                       result_minute, "хв.", "та",
-                      remain_seconds_guess, "сек.")
+                      remain_seconds_guess, "сек. до кінця всесвіту.")
         raw_seconds = int(input("Введить кількість секунд яка, на вашу гадку, відповідає цьому терміну: "))
 
         if raw_seconds < life_of_the_universe:
@@ -122,7 +123,7 @@ while run == 1:
                       result_minute, "хв. та",
                       remain_seconds, "сек.")
                 results_of_the_game = round(raw_seconds / random_guess * 100, 5)
-                print("Ви вгадали на ", str(results_of_the_game), "%\n")
+                print("Ви вгадали на ", str(results_of_the_game) + "%\n")
             elif result_billions > 0:
                 print("Ви вказали " + str(raw_seconds) + "; Або іншими словами - це займе всього:",
                       result_billions, "млрд.,",
@@ -133,7 +134,7 @@ while run == 1:
                       result_minute, "хв. та",
                       remain_seconds, "сек.")
                 results_of_the_game = round(raw_seconds / random_guess * 100, 5)
-                print("Ви вгадали на ", str(results_of_the_game), "%\n")
+                print("Ви вгадали на ", str(results_of_the_game) + "%\n")
             elif result_millions > 0:
                 print("Ви вказали " + str(raw_seconds) + "; Або іншими словами - це займе всього:",
                       result_millions, "млн. та",
@@ -143,7 +144,7 @@ while run == 1:
                       result_minute, "хв.", "та",
                       remain_seconds, "сек.")
                 results_of_the_game = round(raw_seconds / random_guess * 100, 5)
-                print("Ви вгадали на ", str(results_of_the_game), "%\n")
+                print("Ви вгадали на ", str(results_of_the_game) + "%\n")
             else:
                 print("Ви вказали " + str(raw_seconds) + "; Або іншими словами - це займе всього:",
                       result_year, "років",
@@ -152,7 +153,7 @@ while run == 1:
                       result_minute, "хв.", "та",
                       remain_seconds, "сек.")
                 results_of_the_game = round(raw_seconds / random_guess * 100, 5)
-                print("Ви вгадали на ", str(results_of_the_game), "%\n")
+                print("Ви вгадали на ", str(results_of_the_game) + "%\n")
 
         else:
             print("Ну камон, то вже більше потенційного строку існування всесвіту. Calm Down")
