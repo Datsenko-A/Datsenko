@@ -1,6 +1,5 @@
 
 import random
-import math
 
 counter = 0
 statistics = []
