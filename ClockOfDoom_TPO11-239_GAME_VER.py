@@ -80,7 +80,9 @@ while counter <= 5:
                           result_hour, "год.",
                           result_minute, "хв.", "та",
                           remain_seconds_guess, "сек. до кінця всесвіту.")
-            raw_seconds = int(input("Введить кількість секунд яка, на вашу гадку, відповідає цьому терміну: "))
+
+            raw_seconds = int(input("Введить кількість секунд яка, на вашу гадку, відповідає цьому терміну."
+                                    "\nВкажіть число: "))
 
             if raw_seconds < life_of_the_universe:
                 year = 60 * 60 * 24 * 365
@@ -129,41 +131,36 @@ while counter <= 5:
                           result_hour, "год.",
                           result_minute, "хв. та",
                           remain_seconds, "сек.")
-                    results_of_the_game = round(raw_seconds / random_guess * 100, 5)
+                    results_of_the_game = round(raw_seconds / random_guess * 100, 0)
                     print("Ви вгадали на ", str(results_of_the_game) + "%")
                     statistics.append(results_of_the_game)
                     average = sum(statistics) / len(statistics)
-                    print("Загальний результат: ", str(average) + "%")
                     if len(statistics) == 1:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0])+"%")
                     elif len(statistics) == 2:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0])+"%",
+                              "\nСпроба 2:", str(statistics[1])+"%")
                     elif len(statistics) == 3:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0])+"%",
+                              "\nСпроба 2:", str(statistics[1])+"%",
+                              "\nСпроба 3:", str(statistics[2])+"%")
                     elif len(statistics) == 4:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "Спроба 4:", statistics[3],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0])+"%",
+                              "\nСпроба 2:", str(statistics[1])+"%",
+                              "\nСпроба 3:", str(statistics[2])+"%",
+                              "\nСпроба 4:", str(statistics[3])+"%")
                     elif len(statistics) == 5:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "Спроба 4:", statistics[3],
-                              "Спроба 5:", statistics[4],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0])+"%",
+                              "\nСпроба 2:", str(statistics[1])+"%",
+                              "\nСпроба 3:", str(statistics[2])+"%",
+                              "\nСпроба 4:", str(statistics[3])+"%",
+                              "\nСпроба 5:", str(statistics[4])+"%")
+                    print("Загальний результат: ", str(average) + "%\n")
 
                 elif result_billions > 0:
                     print("Ви вказали " + str(raw_seconds) + "; Або іншими словами - це займе всього:",
@@ -174,41 +171,36 @@ while counter <= 5:
                           result_hour, "год.",
                           result_minute, "хв. та",
                           remain_seconds, "сек.")
-                    results_of_the_game = round(raw_seconds / random_guess * 100, 5)
+                    results_of_the_game = round(raw_seconds / random_guess * 100, 0)
                     print("Ви вгадали на ", str(results_of_the_game) + "%")
                     statistics.append(results_of_the_game)
                     average = sum(statistics) / len(statistics)
-                    print("Загальний результат: ", str(average) + "%")
                     if len(statistics) == 1:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0]) + "%")
                     elif len(statistics) == 2:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0]) + "%",
+                              "\nСпроба 2:", str(statistics[1]) + "%")
                     elif len(statistics) == 3:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0]) + "%",
+                              "\nСпроба 2:", str(statistics[1]) + "%",
+                              "\nСпроба 3:", str(statistics[2]) + "%")
                     elif len(statistics) == 4:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "Спроба 4:", statistics[3],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0]) + "%",
+                              "\nСпроба 2:", str(statistics[1]) + "%",
+                              "\nСпроба 3:", str(statistics[2]) + "%",
+                              "\nСпроба 4:", str(statistics[3]) + "%")
                     elif len(statistics) == 5:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "Спроба 4:", statistics[3],
-                              "Спроба 5:", statistics[4],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0]) + "%",
+                              "\nСпроба 2:", str(statistics[1]) + "%",
+                              "\nСпроба 3:", str(statistics[2]) + "%",
+                              "\nСпроба 4:", str(statistics[3]) + "%",
+                              "\nСпроба 5:", str(statistics[4]) + "%")
+                    print("Загальний результат: ", str(average) + "%\n")
 
                 elif result_millions > 0:
                     print("Ви вказали " + str(raw_seconds) + "; Або іншими словами - це займе всього:",
@@ -218,41 +210,36 @@ while counter <= 5:
                           result_hour, "год.",
                           result_minute, "хв.", "та",
                           remain_seconds, "сек.")
-                    results_of_the_game = round(raw_seconds / random_guess * 100, 5)
+                    results_of_the_game = round(raw_seconds / random_guess * 100, 0)
                     print("Ви вгадали на ", str(results_of_the_game) + "%")
                     statistics.append(results_of_the_game)
                     average = sum(statistics) / len(statistics)
-                    print("Загальний результат: ", str(average) + "%")
                     if len(statistics) == 1:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0])+"%")
                     elif len(statistics) == 2:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0])+"%",
+                              "\nСпроба 2:", str(statistics[1])+"%")
                     elif len(statistics) == 3:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0])+"%",
+                              "\nСпроба 2:", str(statistics[1])+"%",
+                              "\nСпроба 3:", str(statistics[2])+"%")
                     elif len(statistics) == 4:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "Спроба 4:", statistics[3],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0])+"%",
+                              "\nСпроба 2:", str(statistics[1])+"%",
+                              "\nСпроба 3:", str(statistics[2])+"%",
+                              "\nСпроба 4:", str(statistics[3])+"%")
                     elif len(statistics) == 5:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "Спроба 4:", statistics[3],
-                              "Спроба 5:", statistics[4],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0])+"%",
+                              "\nСпроба 2:", str(statistics[1])+"%",
+                              "\nСпроба 3:", str(statistics[2])+"%",
+                              "\nСпроба 4:", str(statistics[3])+"%",
+                              "\nСпроба 5:", str(statistics[4])+"%")
+                    print("Загальний результат: ", str(average) + "%\n")
 
                 else:
                     print("Ви вказали " + str(raw_seconds) + "; Або іншими словами - це займе всього:",
@@ -261,77 +248,67 @@ while counter <= 5:
                           result_hour, "год.",
                           result_minute, "хв.", "та",
                           remain_seconds, "сек.")
-                    results_of_the_game = round(raw_seconds / random_guess * 100, 5)
+                    results_of_the_game = round(raw_seconds / random_guess * 100, 0)
                     print("Ви вгадали на ", str(results_of_the_game) + "%")
                     statistics.append(results_of_the_game)
                     average = sum(statistics) / len(statistics)
-                    print("Загальний результат: ", str(average) + "%")
                     if len(statistics) == 1:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0]) + "%")
                     elif len(statistics) == 2:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0]) + "%",
+                              "\nСпроба 2:", str(statistics[1]) + "%")
                     elif len(statistics) == 3:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0]) + "%",
+                              "\nСпроба 2:", str(statistics[1]) + "%",
+                              "\nСпроба 3:", str(statistics[2]) + "%")
                     elif len(statistics) == 4:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "Спроба 4:", statistics[3],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0]) + "%",
+                              "\nСпроба 2:", str(statistics[1]) + "%",
+                              "\nСпроба 3:", str(statistics[2]) + "%",
+                              "\nСпроба 4:", str(statistics[3]) + "%")
                     elif len(statistics) == 5:
-                        print("Ваша статистика: ",
-                              "Спроба 1:", statistics[0],
-                              "Спроба 2:", statistics[1],
-                              "Спроба 3:", statistics[2],
-                              "Спроба 4:", statistics[3],
-                              "Спроба 5:", statistics[4],
-                              "\n")
+                        print("Ваша статистика:"
+                              "\nСпроба 1:", str(statistics[0]) + "%",
+                              "\nСпроба 2:", str(statistics[1]) + "%",
+                              "\nСпроба 3:", str(statistics[2]) + "%",
+                              "\nСпроба 4:", str(statistics[3]) + "%",
+                              "\nСпроба 5:", str(statistics[4]) + "%")
+                    print("Загальний результат: ", str(average) + "%\n")
 
             else:
                 print("Ну камон, то вже більше потенційного строку існування всесвіту. Calm Down")
                 statistics.append(0)
                 average = sum(statistics) / len(statistics)
-                print("Загальний результат: ", str(average) + "%")
                 if len(statistics) == 1:
-                    print("Ваша статистика: ",
-                          "Спроба 1:", statistics[0],
-                          "\n")
+                    print("Ваша статистика:"
+                          "\nСпроба 1:", str(statistics[0]) + "%")
                 elif len(statistics) == 2:
-                    print("Ваша статистика: ",
-                          "Спроба 1:", statistics[0],
-                          "Спроба 2:", statistics[1],
-                          "\n")
+                    print("Ваша статистика:"
+                          "\nСпроба 1:", str(statistics[0]) + "%",
+                          "\nСпроба 2:", str(statistics[1]) + "%")
                 elif len(statistics) == 3:
-                    print("Ваша статистика: ",
-                          "Спроба 1:", statistics[0],
-                          "Спроба 2:", statistics[1],
-                          "Спроба 3:", statistics[2],
-                          "\n")
+                    print("Ваша статистика:"
+                          "\nСпроба 1:", str(statistics[0]) + "%",
+                          "\nСпроба 2:", str(statistics[1]) + "%",
+                          "\nСпроба 3:", str(statistics[2]) + "%")
                 elif len(statistics) == 4:
-                    print("Ваша статистика: ",
-                          "Спроба 1:", statistics[0],
-                          "Спроба 2:", statistics[1],
-                          "Спроба 3:", statistics[2],
-                          "Спроба 4:", statistics[3],
-                          "\n")
+                    print("Ваша статистика:"
+                          "\nСпроба 1:", str(statistics[0]) + "%",
+                          "\nСпроба 2:", str(statistics[1]) + "%",
+                          "\nСпроба 3:", str(statistics[2]) + "%",
+                          "\nСпроба 4:", str(statistics[3]) + "%")
                 elif len(statistics) == 5:
-                    print("Ваша статистика: ",
-                          "Спроба 1:", statistics[0],
-                          "Спроба 2:", statistics[1],
-                          "Спроба 3:", statistics[2],
-                          "Спроба 4:", statistics[3],
-                          "Спроба 5:", statistics[4],
-                          "\n")
+                    print("Ваша статистика:"
+                          "\nСпроба 1:", str(statistics[0]) + "%",
+                          "\nСпроба 2:", str(statistics[1]) + "%",
+                          "\nСпроба 3:", str(statistics[2]) + "%",
+                          "\nСпроба 4:", str(statistics[3]) + "%",
+                          "\nСпроба 5:", str(statistics[4]) + "%")
+                print("Загальний результат: ", str(average) + "%\n")
 
 
         try:
