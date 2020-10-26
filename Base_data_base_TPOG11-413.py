@@ -31,11 +31,13 @@ conn.commit()
 data_import_main = []
 data_import_position = []
 data_import_salary = []
-try:
-    how_many = int(input("Скільки строк потрібно ввести: "))
-except ValueError:
-    how_many = 0
-    print("Тільки числа.")
+how_many = -1
+while how_many == -1:
+    try:
+        how_many = int(input("Скільки строк потрібно ввести: "))
+    except ValueError:
+        how_many = -1
+        print("Тільки числа.")
 
 while how_many != 0:
     try:
