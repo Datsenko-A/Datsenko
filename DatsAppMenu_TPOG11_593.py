@@ -18,7 +18,7 @@ while initial_run == 1:
             print("Не вірно вказаний пункт.")
         elif int(user_input) == 1:
             first_run = 1
-            while first_run >= 1:
+            while first_run == 1:
                 first_run -= 1
                 print("Запущено програму 'Годинник Знищення'\n")
                 ClockOfDoom_TPO11_239_GAME_VER.clock_of_doom_the_game()
