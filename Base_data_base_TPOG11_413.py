@@ -30,9 +30,6 @@ def data_base_in_memory():
         )""")
     conn.commit()
 
-    data_import_main = []
-    data_import_position = []
-    data_import_salary = []
     how_many = -1
     while how_many == -1:
         try:
