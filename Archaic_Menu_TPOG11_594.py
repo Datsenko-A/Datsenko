@@ -18,7 +18,7 @@ def delete_record():
 initial_run = 1
 while initial_run == 1:
 
-    print("---Gracile Menu---")
+    print("---Archaic Menu---")
     print("[1] 'Створити запис'\n"
           "[2] 'Знайти запис'\n"
           "[3] 'Редагувати запис'\n"

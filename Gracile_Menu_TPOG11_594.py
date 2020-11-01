@@ -1,4 +1,8 @@
 
+import Kharkiv_Phone_book_TPOG11_595
+Kharkiv_Phone_book_TPOG11_595.phonebook_creator()
+Kharkiv_Phone_book_TPOG11_595.xlsx_importer()
+
 def create_record():
     pass
 
