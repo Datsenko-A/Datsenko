@@ -15,11 +15,11 @@ def find_record():
 
 
 def edit_record():
-    pass
+    Kharkiv_Phone_book_TPOG11_595.edit_data_field()
 
 
 def delete_record():
-    pass
+    Kharkiv_Phone_book_TPOG11_595.data_delete()
 
 
 def database_layout():
@@ -82,4 +82,3 @@ while initial_run == 1:
             print("Помилкове введення, такого пункту меню немає.\n")
     except ValueError:
         print("Намагайтесь оперирувати числами, без букв та знаків\n")
-
