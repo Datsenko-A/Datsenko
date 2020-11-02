@@ -22,7 +22,7 @@ def phonebook_creator():
 
 
 def create_single_record():
-    conn = sqlite3.connect('data/main.db')
+    conn = sqlite3.connect('data/kharkiv_landline.db')
     phonebook_db = conn.cursor()
     with conn:
         try:
@@ -40,7 +40,7 @@ def create_single_record():
 
 
 def xlsx_importer():
-    conn = sqlite3.connect('data/main.db')
+    conn = sqlite3.connect('data/kharkiv_landline.db')
     phonebook_db = conn.cursor()
     phonebook = openpyxl.load_workbook('data/dummy.xlsx')
     svitla_1 = phonebook.active
@@ -61,7 +61,7 @@ def xlsx_importer():
 
 
 def sql_table_layout():
-    conn = sqlite3.connect('data/main.db')
+    conn = sqlite3.connect('data/kharkiv_landline.db')
     phonebook_db = conn.cursor()
     with conn:
         phonebook_db.execute("SELECT * FROM kharkiv_phonebook")
@@ -75,8 +75,45 @@ def sql_table_layout():
 
 
 def data_selector():
-    conn = sqlite3.connect('data/main.db')
+    conn = sqlite3.connect('data/kharkiv_landline.db')
     phonebook_db = conn.cursor()
+    print("[1] 'ID'\n"
+          "[2] 'Телефон' або 'Phone'\n"
+          "[3] 'Ім'я' або 'Name'\n"
+          "[4] 'Місто' або 'City'\n"
+          "[5] 'Адреса' або 'Address'\n"
+          "[6] 'Район' або 'District'")
+    search_column = ''
+
+    while search_column == '':
+        try:
+            search_column_input = input("Введіть номер поля для пошуку: ")
+            if int(search_column_input) == 1:
+                search_column = 'id'
+            elif int(search_column_input) == 2:
+                search_column = 'phone'
+            elif int(search_column_input) == 3:
+                search_column = 'name'
+            elif int(search_column_input) == 4:
+                search_column = 'city'
+            elif int(search_column_input) == 5:
+                search_column = 'address'
+            elif int(search_column_input) == 6:
+                search_column = 'district'
+            else:
+                search_column = ''
+                print("Помилка вводу поля. Такого поля нема.")
+        except ValueError:
+            print("Помилка значення, тільки числа.")
+
     search_word = input("Введіть пошуковий термін: ")
+
     with conn:
-        phonebook_db.execute()
+        phonebook_db.execute("SELECT * FROM kharkiv_phonebook WHERE {} LIKE '%{}%'".format(search_column, search_word))
+    results = phonebook_db.fetchall()
+    print("Таблиця - Телефонна книга:")
+    print("ID", "\t|\t", "Телефон", "\t\t|\t\t", "Ім'я", "\t\t\t|\t",
+          "Місто", "\t\t|\t", "Адреса", "\t\t\t|\t", "Район")
+    for item in results:
+        print(item[0], "\t|\t", item[1], "\t|\t", item[2], "\t\t|\t",
+              item[3], "\t|\t", item[4], "\t|\t", item[5])
