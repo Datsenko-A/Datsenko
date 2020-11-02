@@ -5,7 +5,7 @@ import sqlite3
 
 
 def phonebook_creator():
-    conn = sqlite3.connect('data/main.db')
+    conn = sqlite3.connect('data/kharkiv_landline.db')
     phonebook_db = conn.cursor()
     with conn:
         try:
@@ -72,3 +72,11 @@ def sql_table_layout():
         for item in results:
             print(item[0], "\t|\t", item[1], "\t|\t", item[2], "\t\t|\t",
                   item[3], "\t|\t", item[4], "\t|\t", item[5])
+
+
+def data_selector():
+    conn = sqlite3.connect('data/main.db')
+    phonebook_db = conn.cursor()
+    search_word = input("Введіть пошуковий термін: ")
+    with conn:
+        phonebook_db.execute()

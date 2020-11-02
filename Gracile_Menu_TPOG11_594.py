@@ -1,6 +1,9 @@
 
 import Kharkiv_Phone_book_TPOG11_595
-Kharkiv_Phone_book_TPOG11_595.phonebook_creator()
+
+
+def db_manual_creator():
+    Kharkiv_Phone_book_TPOG11_595.phonebook_creator()
 
 
 def create_record():
@@ -8,7 +11,7 @@ def create_record():
 
 
 def find_record():
-    pass
+    Kharkiv_Phone_book_TPOG11_595.data_selector()
 
 
 def edit_record():
@@ -31,17 +34,22 @@ initial_run = 1
 while initial_run == 1:
 
     print("---Gracile Menu---")
-    print("[1] 'Створити запис'\n"
+    print("[0] 'Повторне створення бази даних'\n"
+          "[1] 'Створити запис'\n"
           "[2] 'Знайти запис'\n"
           "[3] 'Редагувати запис'\n"
           "[4] 'Видалити запис'\n"
           "[5] 'Показати всю базу'\n"
           "[6] 'Авто-імпортування'\n"
           "[7] 'Вихід'")
-    user_input = input("Вкажіть потрібний пункт меню (1-5 як показано вище): ")
+    user_input = input("Вкажіть потрібний пункт меню (1-7 як показано вище): ")
     try:
         if len(user_input) > 1:
             print("Не вірно вказаний пункт.\n")
+        elif int(user_input) == 0:
+            print("Ви обрали створення запису.\n")
+            db_manual_creator()
+
         elif int(user_input) == 1:
             print("Ви обрали створення запису.\n")
             create_record()
