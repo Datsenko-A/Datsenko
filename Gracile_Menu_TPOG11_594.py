@@ -1,10 +1,10 @@
 
 import Kharkiv_Phone_book_TPOG11_595
 Kharkiv_Phone_book_TPOG11_595.phonebook_creator()
-Kharkiv_Phone_book_TPOG11_595.xlsx_importer()
+
 
 def create_record():
-    pass
+    Kharkiv_Phone_book_TPOG11_595.create_single_record()
 
 
 def find_record():
@@ -19,6 +19,14 @@ def delete_record():
     pass
 
 
+def database_layout():
+    Kharkiv_Phone_book_TPOG11_595.sql_table_layout()
+
+
+def phonebook_importer():
+    Kharkiv_Phone_book_TPOG11_595.xlsx_importer()
+
+
 initial_run = 1
 while initial_run == 1:
 
@@ -27,7 +35,9 @@ while initial_run == 1:
           "[2] 'Знайти запис'\n"
           "[3] 'Редагувати запис'\n"
           "[4] 'Видалити запис'\n"
-          "[5] 'Вихід'")
+          "[5] 'Показати всю базу'\n"
+          "[6] 'Авто-імпортування'\n"
+          "[7] 'Вихід'")
     user_input = input("Вкажіть потрібний пункт меню (1-5 як показано вище): ")
     try:
         if len(user_input) > 1:
@@ -49,6 +59,14 @@ while initial_run == 1:
             delete_record()
 
         elif int(user_input) == 5:
+            print("Ви обрали показ всієї бази.\n")
+            database_layout()
+
+        elif int(user_input) == 6:
+            print("Ви обрали авто-імпортування\n")
+            phonebook_importer()
+
+        elif int(user_input) == 7:
             print("Ви обрали вихід з програми.\n")
             initial_run -= 1
 
