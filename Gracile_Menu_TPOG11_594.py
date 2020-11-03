@@ -47,7 +47,7 @@ while initial_run == 1:
         if len(user_input) > 1:
             print("Не вірно вказаний пункт.\n")
         elif int(user_input) == 0:
-            print("Ви обрали створення запису.\n")
+            print("Ви обрали створення нової бази даних.\n")
             db_manual_creator()
 
         elif int(user_input) == 1:

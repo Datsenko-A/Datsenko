@@ -17,25 +17,36 @@ def phonebook_creator():
                     address TEXT,
                     district TEXT
                 )""")
+            print('data/kharkiv_landline.db created.')
         except sqlite3.OperationalError:
-            print("Помилка створення бази. Вже існує.")
+            print("Помилка створення бази. Вже існує:", "data/kharkiv_landline.db")
 
 
 def create_single_record():
     conn = sqlite3.connect('data/kharkiv_landline.db')
     phonebook_db = conn.cursor()
-    with conn:
+    input_attempt = 1
+    print("Введіть '0' щоб повернутись у головне меню.")
+    while input_attempt >= 1:
         try:
-            user_input = input("Введіть дані через пропуск (Телефон Ім'я Місто Адреса Район): ")
-            contact_input = list(user_input.split())
-            phonebook_db.execute("""INSERT INTO kharkiv_phonebook (
-                                    phone,
-                                    name,
-                                    city,
-                                    address,
-                                    district) 
-                                    VALUES (?,?,?,?,?)""", contact_input)
+            input_attempt -= 1
+            user_input = input("Введіть дані через кому(5 значень) ',' (Телефон,Ім'я,Місто,Адреса,Район): ")
+            if user_input == '0':
+                input_attempt = 0
+            else:
+                with conn:
+                    contact_input = list(user_input.split(','))
+                    phonebook_db.execute("""INSERT INTO kharkiv_phonebook (
+                                            phone,
+                                            name,
+                                            city,
+                                            address,
+                                            district) 
+                                            VALUES (?,?,?,?,?)""", contact_input)
+                    print ("Ви ввели: ", contact_input, "\nЗапис додано.")
         except sqlite3.ProgrammingError:
+            print(input_attempt)
+            input_attempt += 1
             print("Помилка вводу.")
 
 
@@ -58,6 +69,7 @@ def xlsx_importer():
                                     district) 
                                     VALUES (?,?,?,?,?)""", contact_input)
             contact_input = []
+        print("data/dummy.xlsx імпортовано.")
 
 
 def sql_table_layout():
@@ -88,35 +100,44 @@ def data_selector():
     while search_column == '':
         try:
             search_column_input = input("Введіть номер поля для пошуку: ")
-            if int(search_column_input) == 1:
-                search_column = 'id'
-            elif int(search_column_input) == 2:
-                search_column = 'phone'
-            elif int(search_column_input) == 3:
-                search_column = 'name'
-            elif int(search_column_input) == 4:
-                search_column = 'city'
-            elif int(search_column_input) == 5:
-                search_column = 'address'
-            elif int(search_column_input) == 6:
-                search_column = 'district'
+            search_word = input("Введіть пошуковий термін: ")
+            if search_column_input == 1:
+                with conn:
+                    phonebook_db.execute(
+                        "SELECT * FROM kharkiv_phonebook WHERE id = {}".format(search_word))
+                results = phonebook_db.fetchall()
+                print("Таблиця - Телефонна книга:")
+                print("ID", "\t\t|\t\t", "Телефон", "\t\t|\t\t", "Ім'я", "\t\t|\t\t",
+                      "Місто", "\t\t|\t\t", "Адреса", "\t\t|\t\t", "Район")
+                for item in results:
+                    print(item[0], "\t\t|\t\t", item[1], "\t\t|\t\t", item[2], "\t\t|\t\t",
+                          item[3], "\t\t|\t\t", item[4], "\t\t|\t\t", item[5])
             else:
-                search_column = ''
-                print("Помилка вводу поля. Такого поля нема.")
+                if int(search_column_input) == 2:
+                    search_column = 'phone'
+                elif int(search_column_input) == 3:
+                    search_column = 'name'
+                elif int(search_column_input) == 4:
+                    search_column = 'city'
+                elif int(search_column_input) == 5:
+                    search_column = 'address'
+                elif int(search_column_input) == 6:
+                    search_column = 'district'
+                else:
+                    search_column = ''
+                    print("Помилка вводу поля. Такого поля нема.")
         except ValueError:
             print("Помилка значення, тільки числа.")
-
-    search_word = input("Введіть пошуковий термін: ")
 
     with conn:
         phonebook_db.execute("SELECT * FROM kharkiv_phonebook WHERE {} LIKE '%{}%'".format(search_column, search_word))
     results = phonebook_db.fetchall()
     print("Таблиця - Телефонна книга:")
-    print("ID", "\t|\t", "Телефон", "\t\t|\t\t", "Ім'я", "\t\t\t|\t",
-          "Місто", "\t\t|\t", "Адреса", "\t\t\t|\t", "Район")
+    print("ID", "\t\t|\t\t", "Телефон", "\t\t|\t\t", "Ім'я", "\t\t|\t\t",
+          "Місто", "\t\t|\t\t", "Адреса", "\t\t|\t\t", "Район")
     for item in results:
-        print(item[0], "\t|\t", item[1], "\t|\t", item[2], "\t\t|\t",
-              item[3], "\t|\t", item[4], "\t|\t", item[5])
+        print(item[0], "\t\t|\t\t", item[1], "\t\t|\t\t", item[2], "\t\t|\t\t",
+              item[3], "\t\t|\t\t", item[4], "\t\t|\t\t", item[5])
 
 
 def data_delete():
@@ -128,50 +149,85 @@ def data_delete():
           "[4] 'Місто' або 'City'\n"
           "[5] 'Адреса' або 'Address'\n"
           "[6] 'Район' або 'District'")
-    search_column = ''
-
-    while search_column == '':
+    user_attempt = 1
+    while user_attempt > 0:
         try:
+            print("Введіть '0' для виходу в головне меню.")
             search_column_input = input("Введіть номер поля для пошуку і подальшого видалення: ")
-            if int(search_column_input) == 1:
-                search_column = 'id'
-            elif int(search_column_input) == 2:
-                search_column = 'phone'
-            elif int(search_column_input) == 3:
-                search_column = 'name'
-            elif int(search_column_input) == 4:
-                search_column = 'city'
-            elif int(search_column_input) == 5:
-                search_column = 'address'
-            elif int(search_column_input) == 6:
-                search_column = 'district'
+            if int(search_column_input) == 0:
+                user_attempt = 0
             else:
-                search_column = ''
-                print("Помилка вводу поля. Такого поля нема.")
+                search_word = input("Введіть пошуковий термін за яким запис буде видалено: ")
+                if int(search_column_input) == 1:
+                    with conn:
+                        phonebook_db.execute(
+                            "SELECT * FROM kharkiv_phonebook WHERE id = {}".format(search_word))
+                    results = phonebook_db.fetchall()
+                    empty_base = []
+                    if results == empty_base:
+                        print("Даних по запиту не знайдено.")
+                        user_attempt = 1
+                    else:
+                        print("Таблиця - Телефонна книга:")
+                        print("ID", "\t\t|\t\t", "Телефон", "\t\t|\t\t", "Ім'я", "\t\t|\t\t",
+                              "Місто", "\t\t|\t\t", "Адреса", "\t\t|\t\t", "Район")
+                        for item in results:
+                            print(item[0], "\t\t|\t\t", item[1], "\t\t|\t\t", item[2], "\t\t|\t\t",
+                                  item[3], "\t\t|\t\t", item[4], "\t\t|\t\t", item[5])
+                        confirmation = input("Хочете видалити ці записи? (y/n): ")
+                        if confirmation.upper() == 'Y':
+                            user_attempt = 0
+                            with conn:
+                                phonebook_db.execute(
+                                    "DELETE FROM kharkiv_phonebook WHERE id = {}".format(search_word))
+                            print("Видалення виконано.")
+                        else:
+                            print('Видалення скасовано.')
+                else:
+                    if int(search_column_input) == 2:
+                        search_column = 'phone'
+                    elif int(search_column_input) == 3:
+                        search_column = 'name'
+                    elif int(search_column_input) == 4:
+                        search_column = 'city'
+                    elif int(search_column_input) == 5:
+                        search_column = 'address'
+                    elif int(search_column_input) == 6:
+                        search_column = 'district'
+                    else:
+                        search_column = ''
+                        print("Помилка вводу поля. Такого поля нема.")
+                    if int(search_column_input) in range(6):
+                        with conn:
+                            phonebook_db.execute(
+                                "SELECT * FROM kharkiv_phonebook WHERE {} LIKE '%{}%'".format(search_column, search_word))
+                        results = phonebook_db.fetchall()
+                        empty_base = []
+                        if results == empty_base:
+                            print("Даних по запиту не знайдено.")
+                            user_attempt = 1
+                        else:
+                            print("Таблиця - Телефонна книга:")
+                            print("ID", "\t\t|\t\t", "Телефон", "\t\t|\t\t", "Ім'я", "\t\t|\t\t",
+                                  "Місто", "\t\t|\t\t", "Адреса", "\t\t|\t\t", "Район")
+                            for item in results:
+                                print(item[0], "\t\t|\t\t", item[1], "\t\t|\t\t", item[2], "\t\t|\t\t",
+                                      item[3], "\t\t|\t\t", item[4], "\t\t|\t\t", item[5])
+                            confirmation = input("Хочете видалити ці записи? (y/n): ")
+                            if confirmation.upper() == 'Y':
+                                user_attempt = 0
+                                with conn:
+                                    phonebook_db.execute(
+                                        "DELETE FROM kharkiv_phonebook WHERE {} LIKE '%{}%'".format(search_column, search_word)
+                                    )
+                                print("Видалення виконано.")
+                            else:
+                                print('Видалення скасовано.')
+                    else:
+                        print("Повторне введення.")
+
         except ValueError:
             print("Помилка значення, тільки числа.")
-
-    search_word = input("Введіть пошуковий термін за яким запис буде видалено: ")
-
-    with conn:
-        phonebook_db.execute("SELECT * FROM kharkiv_phonebook WHERE {} LIKE '%{}%'".format(search_column, search_word))
-    results = phonebook_db.fetchall()
-    print("Таблиця - Телефонна книга:")
-    print("ID", "\t|\t", "Телефон", "\t\t|\t\t", "Ім'я", "\t\t\t|\t",
-          "Місто", "\t\t|\t", "Адреса", "\t\t\t|\t", "Район")
-    for item in results:
-        print(item[0], "\t|\t", item[1], "\t|\t", item[2], "\t\t|\t",
-              item[3], "\t|\t", item[4], "\t|\t", item[5])
-
-    confirmation = input("Хочете видалити ці записи? (y/n): ")
-    if confirmation.upper() == 'Y':
-        with conn:
-            phonebook_db.execute(
-                "DELETE FROM kharkiv_phonebook WHERE {} LIKE '%{}%'".format(search_column, search_word)
-            )
-        print("Видалення виконано.")
-    else:
-        print('Видалення скасовано.')
 
 
 def edit_data_field():
