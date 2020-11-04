@@ -33,7 +33,7 @@ def phonebook_importer():
 initial_run = 1
 while initial_run == 1:
 
-    print("---Gracile Menu---")
+    print("\n---Gracile Menu---")
     print("[0] 'Cтворення бази даних'\n"
           "[1] 'Створити запис'\n"
           "[2] 'Знайти запис'\n"
@@ -79,6 +79,6 @@ while initial_run == 1:
             initial_run -= 1
 
         else:
-            print("Помилкове введення, такого пункту меню немає.\n")
+            print("Помилкове введення, такого пункту меню немає.")
     except ValueError:
-        print("Намагайтесь оперирувати числами, без букв та знаків\n")
+        print("Керування меню відбувається тільки за допомогою чисел.")
