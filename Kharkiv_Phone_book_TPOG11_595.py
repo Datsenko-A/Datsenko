@@ -33,16 +33,22 @@ def create_single_record():
         phonebook_db = conn.cursor()
         input_attempt = 1
         print("Введіть '0' щоб повернутись у головне меню.")
-        while input_attempt >= 1:
+        while input_attempt > 0:
             try:
                 input_attempt -= 1
                 user_input = input(
                     "Введіть дані через кому(5 значень без пропусків) ',' (Телефон,Ім'я,Місто,Адреса,Район): ")
+                contact_input = list(user_input.split(','))
                 if user_input == '0':
                     input_attempt = 0
+                elif len(contact_input[0]) != 12:
+                    print("В номері телефону не 12 цифр.")
+                    input_attempt = 1
+                elif not contact_input[0].isnumeric():
+                    print("Номер телефону не має містити букви або знаки.")
+                    input_attempt = 1
                 else:
                     with conn:
-                        contact_input = list(user_input.split(','))
                         phonebook_db.execute("""INSERT INTO phonebook_db (
                                                 phone,
                                                 name,
