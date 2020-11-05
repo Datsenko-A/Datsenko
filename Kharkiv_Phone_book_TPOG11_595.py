@@ -14,7 +14,7 @@ def phonebook_creator():
     phonebook_db = conn.cursor()
     with conn:
         try:
-            phonebook_db.execute(""" CREATE TABLE kharkiv_phonebook (
+            phonebook_db.execute(""" CREATE TABLE phonebook_db (
                     id INTEGER PRIMARY KEY,
                     phone INTEGER,
                     name TEXT,
@@ -36,13 +36,14 @@ def create_single_record():
         while input_attempt >= 1:
             try:
                 input_attempt -= 1
-                user_input = input("Введіть дані через кому(5 значень) ',' (Телефон,Ім'я,Місто,Адреса,Район): ")
+                user_input = input(
+                    "Введіть дані через кому(5 значень без пропусків) ',' (Телефон,Ім'я,Місто,Адреса,Район): ")
                 if user_input == '0':
                     input_attempt = 0
                 else:
                     with conn:
                         contact_input = list(user_input.split(','))
-                        phonebook_db.execute("""INSERT INTO kharkiv_phonebook (
+                        phonebook_db.execute("""INSERT INTO phonebook_db (
                                                 phone,
                                                 name,
                                                 city,
@@ -55,6 +56,8 @@ def create_single_record():
                 print("Помилка вводу.")
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
+    except sqlite3.OperationalError:
+        print("Нема бази даних.")
 
 
 def data_selector():
@@ -82,7 +85,7 @@ def data_selector():
                 if int(search_column_input) == 1:
                     with conn:
                         phonebook_db.execute(
-                            "SELECT * FROM kharkiv_phonebook WHERE id = {}".format(search_word))
+                            "SELECT * FROM phonebook_db WHERE id = {}".format(search_word))
                     results = phonebook_db.fetchall()
                     empty_base = []
                     if results == empty_base:
@@ -93,14 +96,14 @@ def data_selector():
                               '{:<15}'.format("Телефон"),
                               '{:<20}'.format("Ім`я"),
                               '{:<10}'.format("Місто"),
-                              '{:<30}'.format("Адреса"),
+                              '{:<27}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
                             print('{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
                                   '{:<10}'.format(item[3]),
-                                  '{:<30}'.format(item[4]),
+                                  '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
 
                 elif int(search_column_input) in range(2, 7):
@@ -118,7 +121,7 @@ def data_selector():
 
                     with conn:
                         phonebook_db.execute(
-                            "SELECT * FROM kharkiv_phonebook WHERE {} LIKE '%{}%'"
+                            "SELECT * FROM phonebook_db WHERE {} LIKE '%{}%'"
                             .format(search_column, search_word))
                     results = phonebook_db.fetchall()
                     empty_base = []
@@ -141,6 +144,8 @@ def data_selector():
                                   '{:<30}'.format(item[5]))
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
+    except sqlite3.OperationalError:
+        print("Нема бази даних.")
 
 
 def edit_data_field():
@@ -170,7 +175,7 @@ def edit_data_field():
                 if int(search_column_input) == 1:
                     with conn:
                         phonebook_db.execute(
-                            "SELECT * FROM kharkiv_phonebook WHERE id = {}".format(search_word))
+                            "SELECT * FROM phonebook_db WHERE id = {}".format(search_word))
                     results = phonebook_db.fetchall()
                     empty_base = []
                     if results == empty_base:
@@ -183,14 +188,14 @@ def edit_data_field():
                               '{:<15}'.format("Телефон"),
                               '{:<20}'.format("Ім`я"),
                               '{:<10}'.format("Місто"),
-                              '{:<30}'.format("Адреса"),
+                              '{:<27}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
                             print('{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
                                   '{:<10}'.format(item[3]),
-                                  '{:<30}'.format(item[4]),
+                                  '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
 
                 elif int(search_column_input) in range(2, 7):
@@ -207,7 +212,7 @@ def edit_data_field():
 
                     with conn:
                         phonebook_db.execute(
-                            "SELECT * FROM kharkiv_phonebook WHERE {} LIKE '%{}%'"
+                            "SELECT * FROM phonebook_db WHERE {} LIKE '%{}%'"
                             .format(search_column, search_word))
                     results = phonebook_db.fetchall()
                     empty_base = []
@@ -220,14 +225,14 @@ def edit_data_field():
                               '{:<15}'.format("Телефон"),
                               '{:<20}'.format("Ім`я"),
                               '{:<10}'.format("Місто"),
-                              '{:<30}'.format("Адреса"),
+                              '{:<27}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
                             print('{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
                                   '{:<10}'.format(item[3]),
-                                  '{:<30}'.format(item[4]),
+                                  '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
                         edit_attempt = 1
 
@@ -264,17 +269,19 @@ def edit_data_field():
                     with conn:
                         if int(search_column_input) == 1:
                             phonebook_db.execute("""
-                            UPDATE kharkiv_phonebook SET {} = '{}' WHERE id = '{}'"""
+                            UPDATE phonebook_db SET {} = '{}' WHERE id = '{}'"""
                                                  .format(edit_column, updated_data, search_word))
                         else:
                             phonebook_db.execute("""
-                            UPDATE kharkiv_phonebook SET {} = '{}' WHERE {} LIKE '%{}%'"""
+                            UPDATE phonebook_db SET {} = '{}' WHERE {} LIKE '%{}%'"""
                                                  .format(edit_column, updated_data, search_column, search_word))
                     print("Запис змінено.")
                     edit_attempt = 0
                     user_attempt = 0
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
+    except sqlite3.OperationalError:
+        print("Нема бази даних.")
 
 
 def data_delete():
@@ -302,7 +309,7 @@ def data_delete():
                 if int(search_column_input) == 1:
                     with conn:
                         phonebook_db.execute(
-                            "SELECT * FROM kharkiv_phonebook WHERE id = {}".format(search_word))
+                            "SELECT * FROM phonebook_db WHERE id = {}".format(search_word))
                     results = phonebook_db.fetchall()
                     empty_base = []
                     if results == empty_base:
@@ -313,21 +320,21 @@ def data_delete():
                               '{:<15}'.format("Телефон"),
                               '{:<20}'.format("Ім`я"),
                               '{:<10}'.format("Місто"),
-                              '{:<30}'.format("Адреса"),
+                              '{:<27}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
                             print('{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
                                   '{:<10}'.format(item[3]),
-                                  '{:<30}'.format(item[4]),
+                                  '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
                         confirmation = input("\nХочете видалити ці записи? (y/n): ")
                         if confirmation.upper() == 'Y':
                             user_attempt = 0
                             with conn:
                                 phonebook_db.execute(
-                                    "DELETE FROM kharkiv_phonebook WHERE id = {}".format(search_word))
+                                    "DELETE FROM phonebook_db WHERE id = {}".format(search_word))
                             print("Видалення виконано.")
                         else:
                             print('Видалення скасовано.')
@@ -346,7 +353,7 @@ def data_delete():
 
                     with conn:
                         phonebook_db.execute(
-                            "SELECT * FROM kharkiv_phonebook WHERE {} LIKE '%{}%'"
+                            "SELECT * FROM phonebook_db WHERE {} LIKE '%{}%'"
                             .format(search_column, search_word))
                     results = phonebook_db.fetchall()
                     empty_base = []
@@ -358,21 +365,21 @@ def data_delete():
                               '{:<15}'.format("Телефон"),
                               '{:<20}'.format("Ім`я"),
                               '{:<10}'.format("Місто"),
-                              '{:<30}'.format("Адреса"),
+                              '{:<27}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
                             print('{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
                                   '{:<10}'.format(item[3]),
-                                  '{:<30}'.format(item[4]),
+                                  '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
                         confirmation = input("\nХочете видалити ці записи? (y/n): ")
                         if confirmation.upper() == 'Y':
                             user_attempt = 0
                             with conn:
                                 phonebook_db.execute(
-                                    "DELETE FROM kharkiv_phonebook WHERE {} LIKE '%{}%'".format(search_column, search_word)
+                                    "DELETE FROM phonebook_db WHERE {} LIKE '%{}%'".format(search_column, search_word)
                                 )
                             print("Видалення виконано.")
                         else:
@@ -381,6 +388,8 @@ def data_delete():
                     print("Повторне введення.")
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
+    except sqlite3.OperationalError:
+        print("Нема бази даних.")
 
 
 def sql_table_layout():
@@ -388,7 +397,7 @@ def sql_table_layout():
         conn = sqlite3.connect(data_base_name)
         phonebook_db = conn.cursor()
         with conn:
-            phonebook_db.execute("SELECT * FROM kharkiv_phonebook")
+            phonebook_db.execute("SELECT * FROM phonebook_db")
             results = phonebook_db.fetchall()
             empty_base = []
             if results == empty_base:
@@ -399,17 +408,19 @@ def sql_table_layout():
                       '{:<15}'.format("Телефон"),
                       '{:<20}'.format("Ім`я"),
                       '{:<10}'.format("Місто"),
-                      '{:<30}'.format("Адреса"),
+                      '{:<27}'.format("Адреса"),
                       '{:<30}'.format("Район"))
                 for item in results:
                     print('{:<5}'.format(item[0]),
                           '{:<15}'.format(item[1]),
                           '{:<20}'.format(item[2]),
                           '{:<10}'.format(item[3]),
-                          '{:<30}'.format(item[4]),
+                          '{:<27}'.format(item[4]),
                           '{:<30}'.format(item[5]))
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
+    except sqlite3.OperationalError:
+        print("Нема бази даних.")
 
 
 def xlsx_importer():
@@ -433,7 +444,7 @@ def xlsx_importer():
             for contact in table_1.iter_rows(min_row=2, min_col=1, max_col=5, max_row=all_import, values_only=True):
                 for cell in contact:
                     contact_input.append(cell)
-                phonebook_db.execute("""INSERT INTO kharkiv_phonebook (
+                phonebook_db.execute("""INSERT INTO phonebook_db (
                                         phone,
                                         name,
                                         city,
@@ -444,3 +455,7 @@ def xlsx_importer():
             print(importfile_name, "імпортовано.")
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
+    except FileNotFoundError:
+        print("Файлу не знайдено.")
+    except sqlite3.OperationalError:
+        print("Нема бази даних.")
