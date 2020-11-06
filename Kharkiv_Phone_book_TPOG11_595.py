@@ -24,7 +24,7 @@ def phonebook_creator():
                 )""")
             print('Базу', data_base_name, 'створено.')
         except sqlite3.OperationalError:
-            print("База вже існує, підключено:", data_base_name)
+            print("Підключена база:", data_base_name)
 
 
 def create_single_record():
@@ -41,13 +41,15 @@ def create_single_record():
                 contact_input = list(user_input.split(','))
                 if user_input == '0':
                     input_attempt = 0
-                elif not contact_input[0].isnumeric():
-                    print("Номер телефону не має містити букви або знаки.")
-                    input_attempt = 1
-                elif len(contact_input[0]) != 12:
-                    print("В номері телефону не 12 цифр.")
-                    input_attempt = 1
                 else:
+                    if not contact_input[0].isnumeric() or len(contact_input[0]) != 12:
+                        while not contact_input[0].isnumeric() or len(contact_input[0]) != 12:
+                            if not contact_input[0].isnumeric():
+                                contact_input[0] = input(
+                                    "Номер телефона може бути тільки числовим, ще раз тільки номер: ")
+                            elif len(contact_input[0]) != 12:
+                                contact_input[0] = input(
+                                    "Номер телефона має 12 символів починаючи з '38', ще раз тільки номер: ")
                     with conn:
                         phonebook_db.execute("""INSERT INTO phonebook_db (
                                                 phone,
@@ -79,6 +81,7 @@ def data_selector():
               "[6] 'Район' або 'District'")
         user_attempt = 1
         search_column = ""
+        counter = 0
         while user_attempt > 0:
             print("\nВведіть '0' для виходу в головне меню.")
             search_column_input = input("Введіть номер поля для пошуку: ")
@@ -98,20 +101,24 @@ def data_selector():
                         print("Даних по запиту не знайдено.")
                     else:
                         print("Телефонна книга:")
-                        print('{:<5}'.format("ID"),
+                        print('{:<5}'.format("№"),
+                              '{:<5}'.format("ID"),
                               '{:<15}'.format("Телефон"),
                               '{:<20}'.format("Ім`я"),
                               '{:<10}'.format("Місто"),
                               '{:<27}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
-                            print('{:<5}'.format(item[0]),
+                            counter += 1
+                            print('{:<5}'.format(counter),
+                                  '{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
                                   '{:<10}'.format(item[3]),
                                   '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
-
+                        print("Всього записів:", counter)
+                        counter = 0
                 elif int(search_column_input) in range(2, 7):
                     if int(search_column_input) == 2:
                         search_column = 'phone'
@@ -142,12 +149,15 @@ def data_selector():
                               '{:<30}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
+                            counter += 1
                             print('{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
                                   '{:<10}'.format(item[3]),
                                   '{:<30}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
+                        print("Всього записів:", counter)
+                        counter = 0
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
     except sqlite3.OperationalError:
@@ -169,6 +179,7 @@ def edit_data_field():
         search_column = ""
         edit_attempt = 0
         search_word = ""
+        counter = 0
         while user_attempt == 1:
             print("\nВведіть '0' для виходу в головне меню.")
             search_column_input = input("Введіть номер поля для пошуку: ")
@@ -197,12 +208,15 @@ def edit_data_field():
                               '{:<27}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
+                            counter += 1
                             print('{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
                                   '{:<10}'.format(item[3]),
                                   '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
+                        print("Всього записів:", counter)
+                        counter = 0
 
                 elif int(search_column_input) in range(2, 7):
                     if int(search_column_input) == 2:
@@ -234,6 +248,7 @@ def edit_data_field():
                               '{:<27}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
+                            counter += 1
                             print('{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
@@ -241,6 +256,8 @@ def edit_data_field():
                                   '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
                         edit_attempt = 1
+                        print("Всього записів:", counter)
+                        counter = 0
 
             edit_column = ""
             while edit_attempt == 1:
@@ -263,6 +280,13 @@ def edit_data_field():
                     updated_data = input("Введіть нове значення для поля: ")
                     if int(edit_column_input) == 2:
                         edit_column = 'phone'
+                        while not updated_data.isnumeric() or len(updated_data) != 12 or updated_data == '0':
+                            if updated_data == '0':
+                                edit_attempt -= 1
+                            elif not updated_data.isnumeric():
+                                updated_data = input("Номер телефона може бути тільки числовим, ще раз: ")
+                            elif len(updated_data) != 12:
+                                updated_data = input("Номер телефона має 12 символів починаючи з '38', ще раз: ")
                     elif int(edit_column_input) == 3:
                         edit_column = 'name'
                     elif int(edit_column_input) == 4:
@@ -303,6 +327,7 @@ def data_delete():
               "[6] 'Район' або 'District'")
         user_attempt = 1
         search_column = ""
+        counter = 0
         while user_attempt > 0:
             print("\nВведіть '0' для виходу в головне меню.")
             search_column_input = input("Введіть номер поля для пошуку: ")
@@ -329,12 +354,15 @@ def data_delete():
                               '{:<27}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
+                            counter += 1
                             print('{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
                                   '{:<10}'.format(item[3]),
                                   '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
+                        print("Всього записів:", counter)
+                        counter = 0
                         confirmation = input("\nХочете видалити ці записи? (y/n): ")
                         if confirmation.upper() == 'Y':
                             user_attempt = 0
@@ -374,12 +402,15 @@ def data_delete():
                               '{:<27}'.format("Адреса"),
                               '{:<30}'.format("Район"))
                         for item in results:
+                            counter += 1
                             print('{:<5}'.format(item[0]),
                                   '{:<15}'.format(item[1]),
                                   '{:<20}'.format(item[2]),
                                   '{:<10}'.format(item[3]),
                                   '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
+                        print("Всього записів:", counter)
+                        counter = 0
                         confirmation = input("\nХочете видалити ці записи? (y/n): ")
                         if confirmation.upper() == 'Y':
                             user_attempt = 0
@@ -402,6 +433,7 @@ def sql_table_layout():
     try:
         conn = sqlite3.connect(data_base_name)
         phonebook_db = conn.cursor()
+        counter = 0
         with conn:
             phonebook_db.execute("SELECT * FROM phonebook_db")
             results = phonebook_db.fetchall()
@@ -417,12 +449,15 @@ def sql_table_layout():
                       '{:<27}'.format("Адреса"),
                       '{:<30}'.format("Район"))
                 for item in results:
+                    counter += 1
                     print('{:<5}'.format(item[0]),
                           '{:<15}'.format(item[1]),
                           '{:<20}'.format(item[2]),
                           '{:<10}'.format(item[3]),
                           '{:<27}'.format(item[4]),
                           '{:<30}'.format(item[5]))
+                print("Всього записів:", counter)
+
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
     except sqlite3.OperationalError:
