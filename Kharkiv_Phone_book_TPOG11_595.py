@@ -33,7 +33,7 @@ def create_single_record():
         phonebook_db = conn.cursor()
         input_attempt = 1
         print("Введіть '0' щоб повернутись у головне меню.")
-        while input_attempt > 0:
+        while input_attempt != 0:
             try:
                 input_attempt -= 1
                 user_input = input(
@@ -41,11 +41,11 @@ def create_single_record():
                 contact_input = list(user_input.split(','))
                 if user_input == '0':
                     input_attempt = 0
-                elif len(contact_input[0]) != 12:
-                    print("В номері телефону не 12 цифр.")
-                    input_attempt = 1
                 elif not contact_input[0].isnumeric():
                     print("Номер телефону не має містити букви або знаки.")
+                    input_attempt = 1
+                elif len(contact_input[0]) != 12:
+                    print("В номері телефону не 12 цифр.")
                     input_attempt = 1
                 else:
                     with conn:
@@ -59,7 +59,7 @@ def create_single_record():
                         print("Ви ввели: ", contact_input, "\nЗапис додано.")
             except sqlite3.ProgrammingError:
                 input_attempt += 1
-                print("Помилка вводу.")
+                print("Помилка вводу. Потрібно 5 значень через коми.")
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
     except sqlite3.OperationalError:
