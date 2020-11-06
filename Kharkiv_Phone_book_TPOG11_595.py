@@ -7,7 +7,7 @@ global data_base_name
 
 
 def phonebook_creator():
-    data_base_name_input = input("Введіть назву для  нової бази даних або вкажіть існуюючу: ")
+    data_base_name_input = input("Введіть назву для нової бази даних або вкажіть існуючу: ")
     global data_base_name
     data_base_name = "%s%s%s" % ('data/', data_base_name_input, '.db')
     conn = sqlite3.connect(data_base_name)
@@ -22,7 +22,7 @@ def phonebook_creator():
                     address TEXT,
                     district TEXT
                 )""")
-            print(data_base_name, 'created.')
+            print('Базу', data_base_name, 'створено.')
         except sqlite3.OperationalError:
             print("База вже існує, підключено:", data_base_name)
 
@@ -63,7 +63,7 @@ def create_single_record():
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
     except sqlite3.OperationalError:
-        print("Нема бази даних.")
+        print("Нема бази даних -", data_base_name)
 
 
 def data_selector():
@@ -151,7 +151,7 @@ def data_selector():
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
     except sqlite3.OperationalError:
-        print("Нема бази даних.")
+        print("Нема бази даних -", data_base_name)
 
 
 def edit_data_field():
@@ -287,7 +287,7 @@ def edit_data_field():
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
     except sqlite3.OperationalError:
-        print("Нема бази даних.")
+        print("Нема бази даних -", data_base_name)
 
 
 def data_delete():
@@ -395,7 +395,7 @@ def data_delete():
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
     except sqlite3.OperationalError:
-        print("Нема бази даних.")
+        print("Нема бази даних -", data_base_name)
 
 
 def sql_table_layout():
@@ -426,7 +426,7 @@ def sql_table_layout():
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
     except sqlite3.OperationalError:
-        print("Нема бази даних.")
+        print("Нема бази даних -", data_base_name)
 
 
 def xlsx_importer():
@@ -464,4 +464,4 @@ def xlsx_importer():
     except FileNotFoundError:
         print("Файлу не знайдено.")
     except sqlite3.OperationalError:
-        print("Нема бази даних.")
+        print("Нема бази даних -", data_base_name)
