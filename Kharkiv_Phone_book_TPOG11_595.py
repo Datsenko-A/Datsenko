@@ -165,6 +165,12 @@ def data_selector():
 
 
 def edit_data_field():
+    user_attempt = 1
+    search_column = ""
+    edit_attempt = 0
+    edit_column = ""
+    search_word = ""
+    counter = 0
     try:
         conn = sqlite3.connect(data_base_name)
         phonebook_db = conn.cursor()
@@ -175,18 +181,17 @@ def edit_data_field():
               "[4] 'Місто' або 'City'\n"
               "[5] 'Адреса' або 'Address'\n"
               "[6] 'Район' або 'District'")
-        user_attempt = 1
-        search_column = ""
-        edit_attempt = 0
-        search_word = ""
-        counter = 0
         while user_attempt == 1:
             print("\nВведіть '0' для виходу в головне меню.")
             search_column_input = input("Введіть номер поля для пошуку: ")
-            if int(search_column_input) == 0:
-                user_attempt = 0
+            if not search_column_input.isnumeric():
+                print("Вибір поля може бути тільки числовим. Пункти меню від 1 до 6.")
+                edit_attempt = -1
+            elif int(search_column_input) == 0:
+                user_attempt -= 1
             elif int(search_column_input) > 6:
                 print("Такого поля нема.")
+                edit_attempt = -1
             else:
                 search_word = input("Введіть пошуковий термін: ")
                 if int(search_column_input) == 1:
@@ -196,10 +201,9 @@ def edit_data_field():
                     results = phonebook_db.fetchall()
                     empty_base = []
                     if results == empty_base:
-                        edit_attempt = 0
                         print("Даних по запиту не знайдено.")
+                        edit_attempt = -1
                     else:
-                        edit_attempt = 1
                         print("Телефонна книга:")
                         print('{:<5}'.format("ID"),
                               '{:<15}'.format("Телефон"),
@@ -238,7 +242,7 @@ def edit_data_field():
                     empty_base = []
                     if results == empty_base:
                         print("Даних по запиту не знайдено.")
-                        edit_attempt = 0
+                        edit_attempt -= 1
                     else:
                         print("Телефонна книга:")
                         print('{:<5}'.format("ID"),
@@ -255,11 +259,13 @@ def edit_data_field():
                                   '{:<10}'.format(item[3]),
                                   '{:<27}'.format(item[4]),
                                   '{:<30}'.format(item[5]))
-                        edit_attempt = 1
                         print("Всього записів:", counter)
                         counter = 0
+                else:
+                    pass
 
-            edit_column = ""
+            edit_attempt += 1
+
             while edit_attempt == 1:
                 print("\nДоступні поля:\n"
                       "[2] 'Телефон' або 'Phone'\n"
@@ -269,32 +275,53 @@ def edit_data_field():
                       "[6] 'Район' або 'District'")
                 print("\nВведіть '0' для виходу в головне меню.")
                 edit_column_input = input("Введіть номер поля для редагування: ")
-                if int(edit_column_input) == 0:
-                    edit_attempt = 0
-                    user_attempt = 0
-                elif int(edit_column_input) > 6:
-                    print("Такого поля нема.")
+                if not edit_column_input.isnumeric():
+                    print("Вибір поля може бути тільки числовим. Пункти меню від 1 до 6.")
+                elif int(edit_column_input) == 0:
+                    edit_attempt -= 1
+                    user_attempt -= 1
                 elif int(edit_column_input) == 1:
                     print("Поле ID недоступне для редагування.")
-                else:
+                elif int(edit_column_input) == 2:
+                    print("\nВведіть '0' для повернення у головне меню.")
+                    edit_column = 'phone'
                     updated_data = input("Введіть нове значення для поля: ")
-                    if int(edit_column_input) == 2:
-                        edit_column = 'phone'
-                        while not updated_data.isnumeric() or len(updated_data) != 12 or updated_data == '0':
-                            if updated_data == '0':
-                                edit_attempt -= 1
-                            elif not updated_data.isnumeric():
-                                updated_data = input("Номер телефона може бути тільки числовим, ще раз: ")
-                            elif len(updated_data) != 12:
-                                updated_data = input("Номер телефона має 12 символів починаючи з '38', ще раз: ")
-                    elif int(edit_column_input) == 3:
-                        edit_column = 'name'
-                    elif int(edit_column_input) == 4:
-                        edit_column = 'city'
-                    elif int(edit_column_input) == 5:
-                        edit_column = 'address'
-                    elif int(edit_column_input) == 6:
-                        edit_column = 'district'
+                    edit_phone_attempt = 1
+                    while not updated_data.isnumeric() or len(updated_data) != 12 and edit_phone_attempt == 1:
+                        print ("\nВведіть '0' для повернення у головне меню.")
+                        updated_data = input("Введіть нове значення для поля: ")
+                        if not updated_data.isnumeric():
+                            print("Номер телефона може бути тільки числовим, ще раз: ")
+                        elif int(updated_data) == 0:
+                            print("Вихід у гловне меню")
+                            edit_phone_attempt -= 1
+                            edit_attempt -= 1
+                            user_attempt -= 1
+                        elif len(updated_data) != 12:
+                            print("Номер телефона має 12 символів починаючи з '38', ще раз: ")
+                        else:
+                            print("Невідома помилка вводу.")
+                            edit_attempt -= 1
+                            edit_phone_attempt -= 1
+                            user_attempt -= 1
+
+                elif int(edit_column_input) > 6:
+                    print("Такого поля нема.")
+
+                else:
+                    print("\nВведіть '0' для виходу в головне меню.")
+                    updated_data = input("Введіть нове значення для поля: ")
+                    if int(updated_data) == 0:
+                        print("Вихід у гловне меню")
+                    else:
+                        if int(edit_column_input) == 3:
+                            edit_column = 'name'
+                        elif int(edit_column_input) == 4:
+                            edit_column = 'city'
+                        elif int(edit_column_input) == 5:
+                            edit_column = 'address'
+                        elif int(edit_column_input) == 6:
+                            edit_column = 'district'
 
                     with conn:
                         if int(search_column_input) == 1:
@@ -329,9 +356,45 @@ def data_delete():
         search_column = ""
         counter = 0
         while user_attempt > 0:
-            print("\nВведіть '0' для виходу в головне меню.")
+            print("\nВведіть '0' для виходу в головне меню aбо 'format' для повного видалення бази")
             search_column_input = input("Введіть номер поля для пошуку: ")
-            if int(search_column_input) == 0:
+            if not search_column_input.isnumeric():
+                print(search_column_input.upper())
+                if search_column_input.upper() == 'FORMAT':
+                    with conn:
+                        phonebook_db.execute("SELECT * FROM phonebook_db")
+                        results = phonebook_db.fetchall()
+                        empty_base = []
+                        if results == empty_base:
+                            print("Даних по запиту не знайдено.")
+                        else:
+                            print("Телефонна книга:")
+                            print('{:<5}'.format("ID"),
+                                  '{:<15}'.format("Телефон"),
+                                  '{:<20}'.format("Ім`я"),
+                                  '{:<10}'.format("Місто"),
+                                  '{:<27}'.format("Адреса"),
+                                  '{:<30}'.format("Район"))
+                            for item in results:
+                                counter += 1
+                                print('{:<5}'.format(item[0]),
+                                      '{:<15}'.format(item[1]),
+                                      '{:<20}'.format(item[2]),
+                                      '{:<10}'.format(item[3]),
+                                      '{:<27}'.format(item[4]),
+                                      '{:<30}'.format(item[5]))
+                            print("Всього записів:", counter)
+                            confirmation = input("\nХочете видалити ці записи? (y/n): ")
+                            if confirmation.upper() == 'Y':
+                                user_attempt = 0
+                                with conn:
+                                    phonebook_db.execute("DELETE FROM phonebook_db")
+                                print("Видалення виконано.")
+                            else:
+                                print('Видалення скасовано.')
+                else:
+                    print("Керування у меню можливо тільки числами.")
+            elif int(search_column_input) == 0:
                 user_attempt = 0
             elif int(search_column_input) > 6:
                 print("Такого поля нема.")
