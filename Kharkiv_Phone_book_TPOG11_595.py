@@ -359,7 +359,6 @@ def data_delete():
             print("\nВведіть '0' для виходу в головне меню aбо 'format' для повного видалення бази")
             search_column_input = input("Введіть номер поля для пошуку: ")
             if not search_column_input.isnumeric():
-                print(search_column_input.upper())
                 if search_column_input.upper() == 'FORMAT':
                     with conn:
                         phonebook_db.execute("SELECT * FROM phonebook_db")
@@ -538,25 +537,40 @@ def xlsx_importer():
               '{:<10}'.format("Місто"),
               '{:<20}'.format("Адреса"),
               '{:<20}'.format("Район"))
-        importfile = input("\nВведіть назву файлу для імпорту: ")
-        importfile_name = "%s%s%s" % ('data/', importfile, '.xlsx')
-        phonebook = openpyxl.load_workbook(importfile_name)
+        import_file = input("\nВведіть назву файлу для імпорту: ")
+        import_file_name = "%s%s%s" % ('data/', import_file, '.xlsx')
+        phonebook = openpyxl.load_workbook(import_file_name)
         table_1 = phonebook.active
         all_import = table_1.max_row
+        print("Всього строк у файлі:", all_import - 1)
         contact_input = []
-        with conn:
-            for contact in table_1.iter_rows(min_row=2, min_col=1, max_col=5, max_row=all_import, values_only=True):
-                for cell in contact:
-                    contact_input.append(cell)
-                phonebook_db.execute("""INSERT INTO phonebook_db (
-                                        phone,
-                                        name,
-                                        city,
-                                        address,
-                                        district) 
-                                        VALUES (?,?,?,?,?)""", contact_input)
-                contact_input = []
-            print(importfile_name, "імпортовано.")
+        line_index = 1
+        import_counter = 0
+        error_counter = 0
+        while all_import - 1 > import_counter:
+            with conn:
+                for contact in table_1.iter_rows(min_row=2, min_col=1, max_col=5, max_row=all_import, values_only=True):
+                    for cell in contact:
+                        contact_input.append(cell)
+                        phone = contact_input[0]
+                    if not phone.isnumeric() and line_index in range(1, 5000, 5):
+                        error_counter += 1
+                        line_index += 5
+                    else:
+                        phonebook_db.execute("""INSERT INTO phonebook_db (
+                                                phone,
+                                                name,
+                                                city,
+                                                address,
+                                                district) 
+                                                VALUES (?,?,?,?,?)""", contact_input)
+                    contact_input = []
+                    import_counter += 1
+                print(import_file_name, "імпортовано.")
+                print("Вдалося імпортувати", all_import - error_counter - 1, "строк.")
+                if all_import > all_import - error_counter:
+                    print("Деякі строки мали букви у полі телефон, вони не були імпортовані.")
+
     except NameError:
         print("Бази даних не створено. Виберіть '0' у головному меню")
     except FileNotFoundError:
