@@ -318,3 +318,6 @@ def clock_of_doom_the_game():
                 transformer()
             except ValueError:
                 print("Тільки кількість секунд, жодних букв або знаків.\n")
+
+
+clock_of_doom_the_game()
